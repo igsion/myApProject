@@ -1,0 +1,45 @@
+{
+  "name": "Mage",
+  "specialPower": "spellCost2Less",
+  "hp": 30,
+  "heroPower": {
+    "name": "Fireblast",
+    "description": "Deal 1 damage.",
+    "mana": 2
+  }
+}
+---
+{
+  "name": "Rogue",
+  "specialPower": "anotherClassCardCost2Less",
+  "hp": 30,
+  "heroPower": {
+    "name": "Steal Card",
+    "description": "Steal 1 card from your opponent\u0027s deck and add it to your hand.",
+    "mana": 3
+  }
+}
+---
+{
+  "name": "Warlock",
+  "specialPower": "has5AdditionalHp",
+  "hp": 30,
+  "heroPower": {
+    "name": "Self Harm",
+    "description": "Does one of these randomly : Add +1/+1 to a random minion on board or Draw a card.",
+    "mana": 0
+  }
+}
+---
+{
+  "name": "Hunter",
+  "specialPower": "allMinionRush",
+  "hp": 30
+}
+---
+{
+  "name": "Priest",
+  "specialPower": "allHealDouble",
+  "hp": 30
+}
+---
