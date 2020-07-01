@@ -19,7 +19,7 @@ public class CollectionPanel extends JPanel {
 
     private Set<Card> cardSet;
     private Set<Hero> heroSet;
-    private JPanel classPanel, cardPanel, mainCardPanel , deckPanel, filterPanel ;
+    private JPanel classPanel, cardPanel, mainCardPanel , deckPanel, filterPanel;
     private JPanel[] cardPanels;
     private CardLayout cardLayout;
     private GridBagConstraints gbc;

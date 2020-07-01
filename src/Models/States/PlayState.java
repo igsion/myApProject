@@ -33,9 +33,11 @@ public class PlayState extends State {
         turn = 0;
     }
 
-    public void startPlay(){
+    public void start(){
         one = this.game.getPlayer();
+        two = this.game.getPlayer();
         deckOne.addAll(this.game.getDeck().getCards());
+        deckTwo.addAll(this.game.getDeck().getCards());
         drawCard(deckOne);
         drawCard(deckOne);
         drawCard(deckOne);

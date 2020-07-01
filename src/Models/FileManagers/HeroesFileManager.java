@@ -1,6 +1,6 @@
 package Models.FileManagers;
 
-import Models.Hero.Hero;
+import Models.Hero.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -60,11 +60,11 @@ public class HeroesFileManager {
     }
 
     public void addHeroes() {
-        Hero mage = new Hero("Mage", "spellCost2Less", 30);
-        Hero rogue = new Hero("Rogue", "anotherClassCardCost2Less", 30);
-        Hero warlock = new Hero("Warlock", "has5AdditionalHp", 30);
-        Hero hunter = new Hero("Hunter", "allMinionRush", 30);
-        Hero priest = new Hero("Priest", "allHealDouble", 30);
+        Hero mage = new Mage();
+        Hero rogue = new Rogue();
+        Hero warlock = new Warlock();
+        Hero hunter = new Hunter();
+        Hero priest = new Priest();
         addHero(mage);
         addHero(rogue);
         addHero(warlock);

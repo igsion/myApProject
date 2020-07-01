@@ -62,12 +62,12 @@ public class MenuController implements ActionListener {
             }
         }
         if(e.getSource() == playButton){
-            Display.getDisplay().changePage("play");
+            Display.getDisplay().changePage("chooseDeck");
             if(menuState == null) {
                 menuState = (MenuState) State.getState();
-                menuState.changeState("play");
+                menuState.changeState("chooseDeck");
             }else{
-                menuState.changeState("play");
+                menuState.changeState("chooseDeck");
             }
         }
     }
