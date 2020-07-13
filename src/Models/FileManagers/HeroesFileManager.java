@@ -11,10 +11,8 @@ import java.util.Set;
 
 public class HeroesFileManager {
 
-    File file;
-    FileWriter fileWriter;
-    BufferedWriter bufferedWriter;
-    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private File file;
+    private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     private static HeroesFileManager heroesFileManager = new HeroesFileManager();
 
@@ -49,8 +47,8 @@ public class HeroesFileManager {
         String myHero = gson.toJson(hero);
         myHero = myHero + "\n";
         try {
-            fileWriter = new FileWriter(file, true);
-            bufferedWriter = new BufferedWriter(fileWriter);
+            FileWriter fileWriter = new FileWriter(file, true);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(myHero);
             bufferedWriter.write("---\n");
             bufferedWriter.close();

@@ -1,10 +1,12 @@
 package Models.Cards;
 
-public class Quest extends Card {
+import Models.ABC.Observer;
 
-    int requiredPoint;
-    String action;
-    String reward;
+public class Quest extends Card implements Observer {
+
+    private int requiredPoint;
+    private String action;
+    private String reward;
 
     public Quest(String name , String hero , int mana , String rarity , String description , String type
             ,int requiredPoint , String action , String reward , int id){
@@ -20,4 +22,25 @@ public class Quest extends Card {
         this.id = id;
     }
 
+    public int getRequiredPoint() {
+        return requiredPoint;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public String getReward() {
+        return reward;
+    }
+
+    @Override
+    public void update(Minion minion) {
+
+    }
+
+    @Override
+    public void update(String event, Minion minion) {
+
+    }
 }

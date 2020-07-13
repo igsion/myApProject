@@ -1,6 +1,7 @@
 {
   "race": "beast",
-  "mechanic": "damageAllMinions",
+  "mechanic": "{ endOfYourTurn : { damageAllOtherMinions : 1 } }",
+  "attributes": [],
   "hp": 2,
   "attack": 4,
   "mana": 3,
@@ -16,6 +17,7 @@
 {
   "race": "dragon",
   "mechanic": "battlecry",
+  "attributes": [],
   "hp": 5,
   "attack": 5,
   "mana": 5,
@@ -67,6 +69,7 @@
 {
   "race": "beast",
   "mechanic": "battlecry",
+  "attributes": [],
   "hp": 3,
   "attack": 3,
   "mana": 3,
@@ -142,6 +145,7 @@
 {
   "race": "",
   "mechanic": "battlecry",
+  "attributes": [],
   "hp": 4,
   "attack": 4,
   "mana": 5,
@@ -157,6 +161,7 @@
 {
   "race": "elemental",
   "mechanic": "attackEqualHealth",
+  "attributes": [],
   "hp": 5,
   "attack": 0,
   "mana": 4,
@@ -172,6 +177,7 @@
 {
   "race": "beast",
   "mechanic": "rushTaunt",
+  "attributes": [],
   "hp": 7,
   "attack": 5,
   "mana": 7,
@@ -187,6 +193,7 @@
 {
   "race": "dragon",
   "mechanic": "battlecry",
+  "attributes": [],
   "hp": 8,
   "attack": 8,
   "mana": 9,
@@ -202,6 +209,7 @@
 {
   "race": "",
   "mechanic": "damageAllMinions",
+  "attributes": [],
   "hp": 2,
   "attack": 3,
   "mana": 2,
@@ -217,6 +225,7 @@
 {
   "race": "",
   "mechanic": "",
+  "attributes": [],
   "hp": 5,
   "attack": 4,
   "mana": 4,
@@ -232,6 +241,7 @@
 {
   "race": "murloc",
   "mechanic": "battlecry,summon",
+  "attributes": [],
   "hp": 1,
   "attack": 2,
   "mana": 2,
@@ -247,6 +257,7 @@
 {
   "race": "",
   "mechanic": "battlecry,destroyEnemyWeapon",
+  "attributes": [],
   "hp": 2,
   "attack": 3,
   "mana": 2,
@@ -324,6 +335,7 @@
 {
   "race": "demon",
   "mechanic": "battlecry",
+  "attributes": [],
   "hp": 5,
   "attack": 5,
   "mana": 9,
@@ -339,6 +351,7 @@
 {
   "race": "mech",
   "mechanic": "battlecry",
+  "attributes": [],
   "hp": 6,
   "attack": 3,
   "mana": 8,
@@ -354,6 +367,7 @@
 {
   "race": "mech",
   "mechanic": "summonOnDamage",
+  "attributes": [],
   "hp": 6,
   "attack": 2,
   "mana": 6,
@@ -368,7 +382,8 @@
 ---
 {
   "race": "",
-  "mechanic": "onDraw",
+  "mechanic": "drawCard",
+  "attributes": [],
   "hp": 4,
   "attack": 4,
   "mana": 5,
@@ -412,6 +427,7 @@
 {
   "race": "beast",
   "mechanic": "",
+  "attributes": [],
   "hp": 4,
   "attack": 2,
   "mana": 3,
@@ -427,6 +443,7 @@
 {
   "race": "beast",
   "mechanic": "triggerOnMinion",
+  "attributes": [],
   "hp": 9,
   "attack": 9,
   "mana": 7,
@@ -442,6 +459,7 @@
 {
   "race": "",
   "mechanic": "inPlay",
+  "attributes": [],
   "hp": 7,
   "attack": 2,
   "mana": 4,
@@ -457,6 +475,7 @@
 {
   "race": "",
   "mechanic": "lifeSteal",
+  "attributes": [],
   "hp": 3,
   "attack": 3,
   "mana": 3,

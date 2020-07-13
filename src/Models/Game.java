@@ -2,6 +2,7 @@ package Models;
 
 import Models.FileManagers.CardsFileManager;
 import Models.FileManagers.HeroesFileManager;
+import Models.FileManagers.InfoPassiveFileManager;
 import Models.Images.ImageLoader;
 import Models.States.*;
 import Views.Display;
@@ -14,6 +15,7 @@ public class Game implements Runnable {
 
     private Player player;
     private Deck deck;
+    private InfoPassive infoPassive;
 
     private PlayState playState;
     private ShopState shopState;
@@ -27,6 +29,7 @@ public class Game implements Runnable {
 
         CardsFileManager.getCardsFileManager().addCards();
         HeroesFileManager.getHeroesFileManager().addHeroes();
+        InfoPassiveFileManager.getInfoPassiveFileManager().addInfoes();
 
         ImageLoader.loadImages();
 
@@ -162,5 +165,13 @@ public class Game implements Runnable {
 
     public void setDeck(Deck deck){
         this.deck = deck;
+    }
+
+    public InfoPassive getInfoPassive() {
+        return infoPassive;
+    }
+
+    public void setInfoPassive(InfoPassive infoPassive) {
+        this.infoPassive = infoPassive;
     }
 }

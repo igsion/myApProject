@@ -15,11 +15,11 @@ public class BarController implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("back")){
-            Display.getDisplay().changePage("menu");
             if(collectionState == null) {
                 collectionState = (CollectionState) State.getState();
             }
             collectionState.changeState();
+            Display.getDisplay().changePage("menu");
         }else if(e.getActionCommand().equals("exit")){
             System.exit(1);
         }else{

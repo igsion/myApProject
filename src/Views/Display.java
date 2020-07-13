@@ -52,7 +52,7 @@ public class Display extends JFrame {
         c.add(ChooseDeckPanel.getChooseDeckPanel(), "chooseDeck");
         c.add(InfoPassivePanel.getInfoPassivePanel(), "choosePassive");
 
-        changePage("choosePassive");
+        changePage("login");
 
         this.setVisible(true);
 

@@ -1,6 +1,10 @@
 package Views.PlayPanels;
 
+import Controllers.Play.DeckChooseController;
+import Models.Deck;
 import Views.Display;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,12 +14,18 @@ import java.util.ArrayList;
 
 public class ChooseDeckPanel extends JPanel {
 
-    private ArrayList<String> decks = new ArrayList<>(0);
+    private Gson gson;
+    private ArrayList<Deck> decks = new ArrayList<>(0);
     private JPanel deckPanel, playPanel, exitPanel;
+    private DeckChooseController deckChooseController;
 
     private static ChooseDeckPanel chooseDeckPanel = new ChooseDeckPanel();
 
     private ChooseDeckPanel(){
+        gson = new Gson();
+
+        deckChooseController = new DeckChooseController();
+
         setLayout(new BorderLayout());
 
         exitPanel = new JPanel();
@@ -53,13 +63,10 @@ public class ChooseDeckPanel extends JPanel {
         playButton.setBorder(null);
         playButton.setFocusPainted(false);
         playButton.setMaximumSize(new Dimension(125,  50));
+        playButton.setActionCommand("passiveInfoPanel");
         playButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        playButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Display.getDisplay().changePage("choosePassive");
-            }
-        });
+
+        playButton.addActionListener(deckChooseController);
 
         playPanel.add(Box.createRigidArea(new Dimension(0 , 200)));
         playPanel.add(playButton);
@@ -69,25 +76,23 @@ public class ChooseDeckPanel extends JPanel {
         add(exitPanel, BorderLayout.NORTH);
         add(deckPanel, BorderLayout.CENTER);
         add(playPanel, BorderLayout.EAST);
-
-
-        updateDecks();
     }
 
-    public void updateDecks(){
-        decks.add("Hello");
-        decks.add("How are you");
-        decks.add("Im fine");
+    public void updateDecks(String decks){
         deckPanel.removeAll();
 
         deckPanel.add(Box.createRigidArea(new Dimension(0 , 200)));
 
-        for(String str : decks){
-            JButton deckButton = new JButton(str);
+        this.decks = gson.fromJson(decks, new TypeToken<ArrayList<Deck>>(){}.getType());
+
+        for(Deck deck : this.decks){
+            JButton deckButton = new JButton(deck.getName());
             deckButton.setFont(new Font("myFont" , Font.PLAIN , 20));
             deckButton.setBorder(null);
+            deckButton.setActionCommand(deck.getName());
             deckButton.setBorder(BorderFactory.createEmptyBorder(10 , 60 , 10,60));
             deckButton.setBackground(Color.CYAN);
+            deckButton.addActionListener(deckChooseController);
             deckPanel.add(deckButton);
         }
     }

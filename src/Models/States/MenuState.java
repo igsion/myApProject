@@ -4,11 +4,15 @@ import Models.Game;
 import Models.Logger;
 import Views.CollectionPanel;
 import Views.StatusPanel;
+import com.google.gson.Gson;
 
 public class MenuState extends State {
 
+    Gson gson;
+
     public MenuState(Game game){
         super(game);
+        gson = new Gson();
     }
 
     public void changeState(String name){
@@ -30,5 +34,9 @@ public class MenuState extends State {
             State.setState(game.getStatusState());
             Logger.getLogger().log("Menu Buttons" , "Navigate to status" , this.game.getPlayer());
         }
+    }
+
+    public String getDecks(){
+        return gson.toJson(this.game.getPlayer().getAvailableDecks());
     }
 }

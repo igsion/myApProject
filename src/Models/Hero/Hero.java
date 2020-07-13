@@ -1,6 +1,8 @@
 package Models.Hero;
 
-public class Hero {
+import Models.ABC.Targetable;
+
+public class Hero implements Targetable {
 
     private String name;
     private HeroPower heroPower;
@@ -25,6 +27,10 @@ public class Hero {
 
     public int getHp() {
         return hp;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
     }
 
     public int getId() {

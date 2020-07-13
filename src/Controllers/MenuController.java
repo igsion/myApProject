@@ -2,8 +2,8 @@ package Controllers;
 
 import Models.States.MenuState;
 import Models.States.State;
-import Views.CollectionPanel;
 import Views.Display;
+import Views.PlayPanels.ChooseDeckPanel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 
 public class MenuController implements ActionListener {
 
-    private JButton shopButton,statusButton ,collectionButton ,settingButton , playButton;
+    private JButton shopButton, statusButton, collectionButton, settingButton, playButton;
     private MenuState menuState;
 
     public MenuController(JButton shopButton, JButton statusButton ,JButton collectionButton ,
@@ -52,6 +52,7 @@ public class MenuController implements ActionListener {
                 menuState.changeState("collection");
             }
         }
+
         if(e.getSource() == settingButton){
             Display.getDisplay().changePage("setting");
             if(menuState == null) {
@@ -61,13 +62,16 @@ public class MenuController implements ActionListener {
                 menuState.changeState("setting");
             }
         }
+
         if(e.getSource() == playButton){
             Display.getDisplay().changePage("chooseDeck");
             if(menuState == null) {
                 menuState = (MenuState) State.getState();
-                menuState.changeState("chooseDeck");
+                ChooseDeckPanel.getChooseDeckPanel().updateDecks(menuState.getDecks());
+                menuState.changeState("play");
             }else{
-                menuState.changeState("chooseDeck");
+                ChooseDeckPanel.getChooseDeckPanel().updateDecks(menuState.getDecks());
+                menuState.changeState("play");
             }
         }
     }

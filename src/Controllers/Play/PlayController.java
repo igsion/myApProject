@@ -1,4 +1,9 @@
-package Controllers;
+package Controllers.Play;
+
+import Models.States.PlayState;
+import Models.States.State;
+import Views.PlayPanels.PlayPanel;
+import com.google.gson.Gson;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,9 +12,16 @@ import java.awt.event.MouseListener;
 
 public class PlayController implements ActionListener , MouseListener {
 
+    private Gson gson = new Gson();
+    private boolean isRunning = true;
+
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        PlayState playState = (PlayState) State.getState();
+        if(e.getActionCommand().equals("endTurn")){
+            playState.nextTurn();
+            PlayPanel.getPlayPanel().updateState(gson.toJson(playState));
+        }
     }
 
     @Override

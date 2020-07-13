@@ -1,6 +1,7 @@
 package Views.PlayPanels;
 
-import Models.Cards.Card;
+import Controllers.Play.InfoPassiveController;
+import Models.InfoPassive;
 import Views.Display;
 
 import javax.swing.*;
@@ -11,12 +12,12 @@ import java.awt.event.ActionListener;
 public class InfoPassivePanel extends JPanel {
 
     private JPanel infoPanel, playPanel, exitPanel;
-    private Card[] passives;
+    private InfoPassiveController infoPassiveController;
 
     private static InfoPassivePanel infoPassivePanel = new InfoPassivePanel();
 
     private InfoPassivePanel(){
-        passives = new Card[0];
+        infoPassiveController = new InfoPassiveController();
 
         setLayout(new BorderLayout());
 
@@ -47,22 +48,6 @@ public class InfoPassivePanel extends JPanel {
         infoPanel.setLayout(fl);
         infoPanel.setBackground(new Color(250 , 150 , 150));
 
-        JButton jLabel = new JButton("Number 1");
-        jLabel.setBackground(Color.CYAN);
-        jLabel.setPreferredSize(new Dimension(240 , 400));
-
-        JButton jLabel1 = new JButton("Number 2");
-        jLabel1.setBackground(Color.CYAN);
-        jLabel1.setPreferredSize(new Dimension(240 , 400));
-
-        JButton jLabel2 = new JButton("Number 3");
-        jLabel2.setBackground(Color.CYAN);
-        jLabel2.setPreferredSize(new Dimension(240 , 400));
-
-        infoPanel.add(jLabel);
-        infoPanel.add(jLabel1);
-        infoPanel.add(jLabel2);
-
         playPanel = new JPanel();
         playPanel.setLayout(new BoxLayout(playPanel, BoxLayout.PAGE_AXIS));
 
@@ -74,14 +59,8 @@ public class InfoPassivePanel extends JPanel {
         playButton.setFocusPainted(false);
         playButton.setMaximumSize(new Dimension(125,  50));
         playButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        playButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Display.getDisplay().changePage("play");
-                PlayPanel.getPlayPanel().requestFocus();
-                PlayPanel.getPlayPanel().requestFocusInWindow();
-            }
-        });
+        playButton.setActionCommand("playButton");
+        playButton.addActionListener(infoPassiveController);
 
         playPanel.add(Box.createRigidArea(new Dimension(0 , 200)));
         playPanel.add(playButton);
@@ -93,10 +72,17 @@ public class InfoPassivePanel extends JPanel {
         add(infoPanel, BorderLayout.CENTER);
     }
 
-    public void updatePassives(Card[] passives){
-        this.passives = passives;
-        for(Card card : passives){
+    public void updatePassives(InfoPassive[] infoes){
+        infoPanel.removeAll();
 
+        for(InfoPassive info : infoes){
+            JButton infoButton = new JButton("<html>" + info.getName() + "<br>" + info.getDescription() + "<html>");
+            infoButton.setBackground(Color.CYAN);
+            infoButton.setPreferredSize(new Dimension(240 , 400));
+            infoButton.addActionListener(infoPassiveController);
+            infoButton.setActionCommand(info.getName());
+
+            infoPanel.add(infoButton);
         }
     }
 
