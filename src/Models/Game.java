@@ -6,11 +6,6 @@ import Models.FileManagers.InfoPassiveFileManager;
 import Models.Images.ImageLoader;
 import Models.States.*;
 import Views.Display;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-
-import java.util.Map;
 
 public class Game implements Runnable {
 

@@ -21,7 +21,7 @@ public class MinionHandler implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         PlayState playState = (PlayState) State.getState();
-        playState.minionSelected(i, player);
+        playState.minionSelected(player, i);
         PlayPanel.getPlayPanel().updateState(gson.toJson(playState));
     }
 

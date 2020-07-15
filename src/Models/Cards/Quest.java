@@ -35,12 +35,7 @@ public class Quest extends Card implements Observer {
     }
 
     @Override
-    public void update(String event) {
-
-    }
-
-    @Override
-    public void update(String event, Minion minion) {
+    public void update(String event, int player) {
 
     }
 }

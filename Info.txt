@@ -1,36 +1,75 @@
 {
   "name": "Twice Draw",
   "description": "You can draw 2 card at the start of each turn",
-  "id": 1
+  "id": 1,
+  "mechanic": {
+    "drawCard": {
+      "drawCard": [
+        1
+      ]
+    }
+  }
 }
 ---
 {
   "name": "Off Cards",
   "description": "All cards cost 1 less",
-  "id": 2
+  "id": 2,
+  "mechanic": {
+    "drawCard": {
+      "lowerCardCost": [
+        1
+      ]
+    }
+  }
 }
 ---
 {
   "name": "Warriors",
   "description": "Whenever a minion dies you get 2 armor",
-  "id": 3
+  "id": 3,
+  "mechanic": {
+    "drawCard": {
+      "lowerCardCost": [
+        1
+      ]
+    }
+  }
 }
 ---
 {
   "name": "Nurse",
   "description": "At the end of your turn, restore health of one of the damaged minions",
-  "id": 4
+  "id": 4,
+  "mechanic": {
+    "endTurn": {
+      "restoreOneMinion": []
+    }
+  }
 }
 ---
 {
   "name": "Free Power",
   "description": "Hero Power cost 1 less mana and you can use it 2 times in one turn",
-  "id": 5
+  "id": 5,
+  "mechanic": {
+    "passive": {
+      "heroPowerChange": [
+        1,
+        2
+      ]
+    }
+  }
 }
 ---
 {
   "name": "Mana Jump",
   "description": "You start with 1 more mana",
-  "id": 6
+  "id": 6,
+  "mechanic": {
+    "onStart": {
+      "oneMoreMana": []
+    }
+  }
 }
 ---

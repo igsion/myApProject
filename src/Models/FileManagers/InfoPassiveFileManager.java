@@ -3,6 +3,8 @@ package Models.FileManagers;
 import Models.InfoPassive;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import java.io.*;
 import java.util.HashSet;
@@ -58,18 +60,66 @@ public class InfoPassiveFileManager {
     }
 
     public void addInfoes() {
-        InfoPassive drawTwice = new InfoPassive("Twice Draw", "You can draw 2 card at the " +
-                "start of each turn", 1);
-        InfoPassive offCards = new InfoPassive("Off Cards", "All cards cost 1 less", 2);
+
+        JsonObject drawTwice = new JsonObject();
+        JsonObject drawTwiceMech = new JsonObject();
+        JsonArray drawTwiceArray = new JsonArray();
+        drawTwiceArray.add(1);
+        drawTwiceMech.add("drawCard", drawTwiceArray);
+        drawTwice.add("drawCard", drawTwiceMech);
+
+        InfoPassive DrawTwice = new InfoPassive("Twice Draw", "You can draw 2 card at the " +
+                "start of each turn", 1, drawTwice);
+
+        JsonObject offCards = new JsonObject();
+        JsonObject offCardsMech = new JsonObject();
+        JsonArray offCardsArray = new JsonArray();
+        offCardsArray.add(1);
+        offCardsMech.add("lowerCardCost", offCardsArray);
+        offCards.add("drawCard", offCardsMech);
+
+        InfoPassive OffCards = new InfoPassive("Off Cards", "All cards cost 1 less", 2, offCards);
+
+        JsonObject warriors = new JsonObject();
+        JsonObject warriorsMech = new JsonObject();
+        JsonArray warriorsArray = new JsonArray();
+        warriorsArray.add(1);
+        warriorsMech.add("lowerCardCost", warriorsArray);
+        warriors.add("drawCard", warriorsMech);
+
         InfoPassive Warriors = new InfoPassive("Warriors", "Whenever a minion dies you get 2 " +
-                "armor", 3);
+                "armor", 3, warriors);
+
+        JsonObject nurse = new JsonObject();
+        JsonObject nurseMech = new JsonObject();
+        JsonArray nurseArray = new JsonArray();
+        nurseMech.add("restoreOneMinion", nurseArray);
+        nurse.add("endTurn", nurseMech);
+
         InfoPassive Nurse = new InfoPassive("Nurse", "At the end of your turn, restore health" +
-                " of one of the damaged minions", 4);
+                " of one of the damaged minions", 4, nurse);
+
+        JsonObject freePower = new JsonObject();
+        JsonObject freePowerMech = new JsonObject();
+        JsonArray freePowerArray = new JsonArray();
+        freePowerArray.add(1);
+        freePowerArray.add(2);
+        freePowerMech.add("heroPowerChange", freePowerArray);
+        freePower.add("passive", freePowerMech);
+
         InfoPassive FreePower = new InfoPassive("Free Power", "Hero Power cost 1 less mana " +
-                "and you can use it 2 times in one turn", 5);
-        InfoPassive ManaJump = new InfoPassive("Mana Jump", "You start with 1 more mana", 6);
-        addInfo(drawTwice);
-        addInfo(offCards);
+                "and you can use it 2 times in one turn", 5, freePower);
+
+        JsonObject manaJump = new JsonObject();
+        JsonObject manaJumpMech = new JsonObject();
+        JsonArray manaJumpArray = new JsonArray();
+        manaJumpMech.add("oneMoreMana", manaJumpArray);
+        manaJump.add("onStart", manaJumpMech);
+
+        InfoPassive ManaJump = new InfoPassive("Mana Jump", "You start with 1 more mana", 6, manaJump);
+
+        addInfo(DrawTwice);
+        addInfo(OffCards);
         addInfo(Warriors);
         addInfo(Nurse);
         addInfo(FreePower);

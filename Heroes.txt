@@ -6,6 +6,7 @@
     "description": "Deal 1 damage.",
     "mana": 2
   },
+  "specialPower": {},
   "hp": 30,
   "id": 1
 }
@@ -18,6 +19,7 @@
     "description": "Steal 1 card from your opponent\u0027s deck.",
     "mana": 3
   },
+  "specialPower": {},
   "hp": 30,
   "id": 2
 }
@@ -29,6 +31,15 @@
     "type": "Normal",
     "description": "Do one randomly - Give a random minion +1/+1; or Draw a card.",
     "mana": 0
+  },
+  "specialPower": {
+    "mechanic": {
+      "onStart": {
+        "setHeroHealth": [
+          35
+        ]
+      }
+    }
   },
   "hp": 30,
   "id": 3
@@ -42,6 +53,7 @@
     "description": "Passive \n After your opponent plays a minion, deal 1 damage to in.",
     "mana": 0
   },
+  "specialPower": {},
   "hp": 30,
   "id": 4
 }
@@ -54,6 +66,7 @@
     "description": "Restore 4 Health.",
     "mana": 2
   },
+  "specialPower": {},
   "hp": 30,
   "id": 5
 }
