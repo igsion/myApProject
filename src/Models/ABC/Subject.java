@@ -8,4 +8,6 @@ public interface Subject {
     public void detach(Observer o);
 
     public void notifyUpdate(String event, Minion minion);
+
+    public void notifyUpdate(String event);
 }

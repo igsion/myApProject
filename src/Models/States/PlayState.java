@@ -3,10 +3,7 @@ package Models.States;
 import Models.ABC.Observer;
 import Models.ABC.Subject;
 import Models.ABC.Targetable;
-import Models.Cards.Card;
-import Models.Cards.Minion;
-import Models.Cards.Quest;
-import Models.Cards.Weapon;
+import Models.Cards.*;
 import Models.FileManagers.CardsFileManager;
 import Models.FileManagers.HeroesFileManager;
 import Models.FileManagers.InfoPassiveFileManager;
@@ -15,6 +12,8 @@ import Models.Hero.Hero;
 import Models.InfoPassive;
 import Models.Player;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 
 public class PlayState extends State implements Subject {
@@ -27,13 +26,15 @@ public class PlayState extends State implements Subject {
     private ArrayList<Minion>[] boardMinions;
     private int[] mana, manaTurn;
     private Hero[] heroes;
-    private Quest questOne, questTwo;
+    private Quest[] quests;
     private Weapon[] weapons;
+    private transient List<Minion> toRemoveOne = new ArrayList<>(0);
+    private transient List<Minion> toRemoveTwo = new ArrayList<>(0);
     private transient ArrayList<Targetable> targets;
     private transient boolean targetSearch = false;
     private transient Minion selectedMinion;
     private transient Map<Minion, Boolean>[] attackMaps;
-    private transient ArrayList<Observer> observers = new ArrayList<>();
+    private transient ArrayList<Observer> observers = new ArrayList<>(0);
     private transient Random random;
 
     public PlayState(Game game) {
@@ -76,40 +77,40 @@ public class PlayState extends State implements Subject {
         manaTurn[1] = 1;
         mana[2] = 1;
         manaTurn[2] = 1;
-        drawCard(decks[1], 1);
-        drawCard(decks[1], 1);
-        drawCard(decks[1], 1);
-        drawCard(decks[1], 2);
-        drawCard(decks[1], 2);
-        drawCard(decks[1], 2);
+        drawCard(1);
+        drawCard(1);
+        drawCard(1);
+        drawCard(2);
+        drawCard(2);
+        drawCard(2);
     }
 
-    public void shuffle(ArrayList<Card> deck, Card card) {
+    public void shuffle(int player, ArrayList<Card> deck, Card card) {
         deck.add(card);
         hands[1].remove(card);
-        drawCard(deck, 1);
+        drawCard(1);
     }
 
-    public void playCard(Card card, int player) {
+    public void playCard(int player, Card card) {
         if (isTurn[player]) {
             switch (card.type) {
                 case "minion":
-                    playMinion(card, player);
+                    playMinion(player, card);
                     break;
                 case "spell":
-                    playSpell(card, player);
+                    playSpell(player, card);
                     break;
                 case "weapon":
-                    playWeapon(card, player);
+                    playWeapon(player, card);
                     break;
                 case "quest":
-                    playQuest(card, player);
+                    playQuest(player, card);
                     break;
             }
         }
     }
 
-    private String playMinion(Card card, int player) {
+    private String playMinion(int player, Card card) {
         if (card.mana <= manaTurn[player]) {
             if (boardMinions[player].size() < 7) {
                 manaTurn[player] -= card.mana;
@@ -133,8 +134,37 @@ public class PlayState extends State implements Subject {
         }
     }
 
-    private String playSpell(Card card, int player) {
+    private String playSpell(int player, Card card) {
         if (card.mana <= manaTurn[player]) {
+            Spell spell = CardsFileManager.getCardsFileManager().getSpell(card.name);
+            if (spell.getMechanic().get("cast").isJsonObject()) {
+                for (Map.Entry a : spell.getMechanic().get("cast").getAsJsonObject().entrySet()) {
+                    Class s = State.getState().getClass();
+                    for (Method method : s.getDeclaredMethods()) {
+                        if (method.getName().equals(a.getKey())) {
+                            try {
+                                int x = Integer.parseInt(a.getValue().toString());
+                                for (int i = 0; i < x; i++)
+                                    method.invoke(State.getState(), player);
+                            } catch (IllegalAccessException | InvocationTargetException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+            } else {
+                Class s = State.getState().getClass();
+                for (Method method : s.getDeclaredMethods()) {
+                    if (method.getName().equals(spell.getMechanic().get("cast").getAsString())) {
+                        try {
+                            method.invoke(State.getState(), player);
+                        } catch (IllegalAccessException | InvocationTargetException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+            }
             manaTurn[player] -= card.mana;
             for (int i = 0; i < hands[player].size(); i++) {
                 if (hands[player].get(i).name.equals(card.name)) {
@@ -148,7 +178,7 @@ public class PlayState extends State implements Subject {
         }
     }
 
-    private String playWeapon(Card card, int player) {
+    private String playWeapon(int player, Card card) {
         if (card.mana <= mana[player]) {
             for (int i = 0; i < hands[player].size(); i++) {
                 if (hands[player].get(i).name.equals(card.name)) {
@@ -165,7 +195,7 @@ public class PlayState extends State implements Subject {
         }
     }
 
-    private String playQuest(Card card, int player) {
+    private String playQuest(int player, Card card) {
         if (card.mana <= mana[player]) {
             for (int i = 0; i < hands[player].size(); i++) {
                 if (hands[player].get(i).name.equals(card.name)) {
@@ -180,24 +210,31 @@ public class PlayState extends State implements Subject {
         }
     }
 
-    private void summon(Minion minion, int player) {
-        if (boardMinions[player].size() < 7) {
-            boardMinions[player].add(minion);
+    public void summon(int player, String minionName, int number) {
+        for (int i = 0; i < number; i++) {
+            if (boardMinions[player].size() < 7) {
+                boardMinions[player].add(CardsFileManager.getCardsFileManager().getMinion(minionName));
+            }
         }
     }
 
-    public void nextTurn() {
-        deSelect();
-        notifyUpdate("endTurn", null);
+    public void nextTurn(int player) {
+        deSelect(player);
         if (isTurn[1]) {
             isTurn[1] = false;
             isTurn[2] = true;
+            Iterator<Observer> iterator = observers.iterator();
+            while (iterator.hasNext()) {
+                iterator.next().update("endFriendlyTurn");
+            }
+            boardMinions[1].removeAll(toRemoveOne);
+            boardMinions[2].removeAll(toRemoveTwo);
             if (mana[2] < 10) {
                 mana[2]++;
             }
             int c = mana[2];
             manaTurn[2] = c;
-            drawCard(decks[2], 2);
+            drawCard(2);
             for (Map.Entry<Minion, Boolean> entry : attackMaps[1].entrySet()) {
                 entry.setValue(false);
             }
@@ -212,7 +249,7 @@ public class PlayState extends State implements Subject {
             }
             int c = mana[1];
             manaTurn[1] = c;
-            drawCard(decks[1], 1);
+            drawCard(1);
             for (Map.Entry<Minion, Boolean> entry : attackMaps[1].entrySet()) {
                 entry.setValue(true);
             }
@@ -221,40 +258,70 @@ public class PlayState extends State implements Subject {
             }
         }
         turn++;
-        notifyUpdate("startTurn", null);
+        notifyUpdate("startTurn");
     }
 
-    private void drawCard(ArrayList<Card> cards, int player) {
-        if (cards.size() > 0) {
-            int i = random.nextInt(cards.size());
+    public void drawCard(int player) {
+        if (decks[player].size() > 0) {
+            int i = random.nextInt(decks[player].size());
             if (hands[player].size() < 10) {
-                hands[player].add(cards.get(i));
-                notifyUpdate("", null);
+                hands[player].add(decks[player].get(i));
+                notifyUpdate("drawCard");
             }
-            cards.remove(i);
-            cards.trimToSize();
+            decks[player].remove(i);
+            decks[player].trimToSize();
         }
     }
 
-    public void deSelect() {
+    public void drawCard(int player, int number) {
+        for (int j = 0; j < number; j++) {
+            if (decks[player].size() > 0) {
+                int i = random.nextInt(decks[player].size());
+                if (hands[player].size() < 10) {
+                    hands[player].add(decks[player].get(i));
+                    notifyUpdate("drawCard");
+                }
+                decks[player].remove(i);
+                decks[player].trimToSize();
+            }
+        }
+    }
+
+    public void drawNotSpell(int player, int number) {
+        for(int j = 0 ; j < number ; j++){
+            if (decks[player].size() > 0) {
+                int i = random.nextInt(decks[player].size());
+                if (!decks[player].get(i).type.equals("spell")) {
+                    if (hands[player].size() < 10) {
+                        hands[player].add(decks[player].get(i));
+                        notifyUpdate("drawCard");
+                    }
+                }
+                decks[player].remove(i);
+                decks[player].trimToSize();
+            }
+        }
+    }
+
+    public void deSelect(int player) {
         targetSearch = false;
         targets.clear();
     }
 
-    public void minionSelected(int i, int player) {
+    public void minionSelected(int player, int i) {
         if (targetSearch) {
             if (this.targets.contains(boardMinions[player].get(i))) {
-                minionAttack(this.selectedMinion, boardMinions[player].get(i));
+                minionAttack(player, this.selectedMinion, boardMinions[player].get(i));
             }
             targetSearch = false;
         } else if (isTurn[player]) {
-            this.targets = minionTargets(boardMinions[player].get(i));
+            this.targets = minionTargets(player, boardMinions[player].get(i));
             this.selectedMinion = boardMinions[player].get(i);
             targetSearch = true;
         }
     }
 
-    private ArrayList<Targetable> minionTargets(Minion myMinion) {
+    public ArrayList<Targetable> minionTargets(int player, Minion myMinion) {
         ArrayList<Targetable> targetables = new ArrayList<>(0);
         if (boardMinions[1].contains(myMinion)) {
             for (Minion minions : boardMinions[2]) {
@@ -284,52 +351,52 @@ public class PlayState extends State implements Subject {
 //
 //    }
 
-    private void buffMinionAttack() {
+    public void buffAttack(int player, int number) {
 //        Minion minion = (Minion) chooseTarget();
 //        minion.setAttack(minion.getAttack() + 1);
     }
 
-    private void buffMinionHealth(Minion minion) {
-        minion.setHp(minion.getHp() + 1);
+    public void buffHealth(int player, int number) {
+//        minion.setHp(minion.getHp() + 1);
     }
 
-    private void weaponAttack(Weapon weapon, Minion defender) {
-        damageMinion(weapon.damage, defender);
+    public void weaponAttack(int player, Weapon weapon, Minion defender) {
+        damageMinion(player, weapon.damage, defender);
         if (isOneTurn()) {
-            damageHero(defender.getAttack(), heroes[1]);
+            damageHero(player, defender.getAttack(), heroes[1]);
         } else {
-            damageHero(defender.getAttack(), heroes[2]);
+            damageHero(player, defender.getAttack(), heroes[2]);
         }
         weapon.durability += -1;
     }
 
-    private void weaponAttack(Weapon weapon, Hero hero) {
-        damageHero(weapon.damage, hero);
+    public void weaponAttack(int player, Weapon weapon, Hero hero) {
+        damageHero(player, weapon.damage, hero);
         weapon.durability += -1;
     }
 
-    private void minionAttack(Minion attacker, Minion defender) {
-        damageMinion(attacker.getAttack(), defender);
-        damageMinion(defender.getAttack(), attacker);
+    public void minionAttack(int player, Minion attacker, Minion defender) {
+        damageMinion(player, attacker.getAttack(), defender);
+        damageMinion(player, defender.getAttack(), attacker);
     }
 
-    private void minionAttack(Minion attacker, Hero hero) {
-        damageHero(attacker.getAttack(), hero);
+    public void minionAttack(int player, Minion attacker, Hero hero) {
+        damageHero(player, attacker.getAttack(), hero);
     }
 
-    private void damageMinion(int i, Minion minion) {
+    public void damageMinion(int player, int i, Minion minion) {
         if (minion.getHp() - i < 1) {
-            minionDie(minion);
+            minionDie(player, minion);
         } else {
             minion.setHp(minion.getHp() - i);
         }
     }
 
-    private void damageHero(int i, Hero hero) {
+    public void damageHero(int player, int i, Hero hero) {
         hero.setHp(hero.getHp() - i);
     }
 
-    private void healMinion(int i, Minion minion) {
+    public void healMinion(int player, int i, Minion minion) {
         Minion myMinion = CardsFileManager.getCardsFileManager().getMinion(minion.name);
         if (minion.getHp() + i <= myMinion.getHp()) {
             minion.setHp(minion.getHp() + i);
@@ -338,7 +405,7 @@ public class PlayState extends State implements Subject {
         }
     }
 
-    private void healHero(int i, Hero hero) {
+    public void healHero(int player, int i, Hero hero) {
         if (hero.getHp() + i <= 30) {
             hero.setHp(hero.getHp() + i);
         } else {
@@ -346,58 +413,74 @@ public class PlayState extends State implements Subject {
         }
     }
 
-    private void damageAllMinions(ArrayList<Minion> exceptions, int damage) {
-        for (Minion minion : boardMinions[1]) {
-            if (!exceptions.contains(minion)) {
-                damageMinion(damage, minion);
+    public void damageAllOtherMinions(int player, Minion myMinion, int damage) {
+        Iterator<Minion> iterator1 = boardMinions[1].iterator();
+        while (iterator1.hasNext()) {
+            Minion minion = iterator1.next();
+            if (!minion.equals(myMinion)) {
+                damageMinion(player, damage, minion);
+            }
+        }
+        Iterator<Minion> iterator2 = boardMinions[2].iterator();
+        while (iterator2.hasNext()) {
+            Minion minion = iterator2.next();
+            if (!minion.equals(myMinion)) {
+                damageMinion(player, damage, minion);
             }
         }
     }
 
-    private void damageAllCharacters(ArrayList<Minion> exceptions, int damage) {
+    public void damageAllMinions(int player, int damage) {
         for (Minion minion : boardMinions[1]) {
-            if (!exceptions.contains(minion)) {
-                damageMinion(damage, minion);
-            }
+            damageMinion(player, damage, minion);
         }
-        damageHero(damage, heroes[1]);
-        damageHero(damage, heroes[2]);
-    }
-
-    private void addRandomCardToHand(String className, int player) {
-        Card card = randomClassCard(className);
-        if (player == 1) {
-            hands[1].add(card);
-        } else {
-            hands[2].add(card);
+        for (Minion minion : boardMinions[2]) {
+            damageMinion(player, damage, minion);
         }
     }
 
-    private void minionAttackToHealth(Minion minion) {
+    public void damageAllCharacters(int player, int damage) {
+        damageAllMinions(player, damage);
+        damageHero(player, damage, heroes[1]);
+        damageHero(player, damage, heroes[2]);
+    }
+
+    public void damageAllOtherCharacters(int player, Minion minion, int damage) {
+        damageAllOtherMinions(player, minion, damage);
+        damageHero(player, damage, heroes[1]);
+        damageHero(player, damage, heroes[2]);
+    }
+
+    public void addRandomCardToHand(int player) {
+        Card card = randomClassCard(player, heroes[3 - player].getName());
+        hands[player].add(card);
+    }
+
+    public void minionAttackToHealth(int player, Minion minion) {
         minion.setAttack(minion.getHp());
     }
 
-    private void setMinionHealth(Minion minion, int health) {
+    public void setMinionHealth(int player, Minion minion, int health) {
         minion.setHp(health);
     }
 
-    private void setHeroHealth(Hero hero, int health) {
-        hero.setHp(health);
-    }
-
-    private void silenceMinion(Minion minion) {
+    public void setHeroHealth(int player, int health) {
 
     }
 
-    private void minionDie(Minion minion) {
+    public void silenceMinion(int player, Minion minion) {
+
+    }
+
+    public void minionDie(int player, Minion minion) {
         if (boardMinions[1].contains(minion)) {
-            boardMinions[1].remove(minion);
+            toRemoveOne.add(minion);
         } else {
-            boardMinions[2].remove(minion);
+            toRemoveTwo.add(minion);
         }
     }
 
-    private Card randomClassCard(String className) {
+    public Card randomClassCard(int player, String className) {
         ArrayList<Card> cards = new ArrayList<>(0);
         for (Card card : CardsFileManager.getCardsFileManager().getCardsSet()) {
             if (card.hero.equals(className)) {
@@ -407,11 +490,11 @@ public class PlayState extends State implements Subject {
         return cards.get(random.nextInt(cards.size()));
     }
 
-    private void transform(int i, Minion minion) {
+    public void transform(int player, int i, Minion minion) {
         this.boardMinions[1].set(i, minion);
     }
 
-    private void discard(Card card, ArrayList<Card> hand) {
+    public void discard(int player, Card card, ArrayList<Card> hand) {
         for (int i = 0; i < hand.size(); i++) {
             if (hand.get(i).name.equals(card.name)) {
                 hand.remove(i);
@@ -460,6 +543,13 @@ public class PlayState extends State implements Subject {
     public void notifyUpdate(String event, Minion minion) {
         for (Observer o : observers) {
             o.update(event, minion);
+        }
+    }
+
+    @Override
+    public void notifyUpdate(String event) {
+        for (Observer o : observers) {
+            o.update(event);
         }
     }
 

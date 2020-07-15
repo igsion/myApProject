@@ -1,7 +1,14 @@
 {
   "race": "beast",
-  "mechanic": "{ endOfYourTurn : { damageAllOtherMinions : 1 } }",
   "attributes": [],
+  "mechanic": {
+    "endFriendlyTurn": {
+      "damageAllOtherMinions": [
+        "this",
+        1
+      ]
+    }
+  },
   "hp": 2,
   "attack": 4,
   "mana": 3,
@@ -16,8 +23,15 @@
 ---
 {
   "race": "dragon",
-  "mechanic": "battlecry",
   "attributes": [],
+  "mechanic": {
+    "battlecry": {
+      "damageAllOtherCharacters": [
+        "this",
+        3
+      ]
+    }
+  },
   "hp": 5,
   "attack": 5,
   "mana": 5,
@@ -25,13 +39,15 @@
   "name": "Crazed Netherwing",
   "hero": "warlock",
   "rarity": "free",
-  "description": "Battlecry: If you\u0027re holding a Dragon, deal 3 damage to all other characters.",
+  "description": "Battlecry: deal 3 damage to all other characters.",
   "type": "minion",
   "played": 0
 }
 ---
 {
-  "mechanic": "transform",
+  "mechanic": {
+    "cast": "transform"
+  },
   "mana": 4,
   "id": 3,
   "name": "Polymorph",
@@ -43,7 +59,11 @@
 }
 ---
 {
-  "mechanic": "drawCard",
+  "mechanic": {
+    "cast": {
+      "drawCard": 2
+    }
+  },
   "mana": 3,
   "id": 4,
   "name": "Arcane Intellect",
@@ -55,7 +75,9 @@
 }
 ---
 {
-  "mechanic": "discoverWeaponAllClass",
+  "mechanic": {
+    "discoverWeapon": ""
+  },
   "mana": 1,
   "id": 5,
   "name": "Friendly Smith",
@@ -68,8 +90,10 @@
 ---
 {
   "race": "beast",
-  "mechanic": "battlecry",
   "attributes": [],
+  "mechanic": {
+    "randomCardToHand": []
+  },
   "hp": 3,
   "attack": 3,
   "mana": 3,
@@ -83,7 +107,11 @@
 }
 ---
 {
-  "mechanic": "silence",
+  "mechanic": {
+    "cast": {
+      "silenceMinion": []
+    }
+  },
   "mana": 0,
   "id": 7,
   "name": "Silence",
@@ -95,7 +123,11 @@
 }
 ---
 {
-  "mechanic": "destroyRandomEnemy",
+  "mechanic": {
+    "cast": {
+      "destroyRandomMinion": []
+    }
+  },
   "mana": 3,
   "id": 8,
   "name": "Deadly Shot",
@@ -107,7 +139,12 @@
 }
 ---
 {
-  "mechanic": "silenceAllEnemy,drawCard",
+  "mechanic": {
+    "cast": {
+      "silenceAllEnemy": [],
+      "drawCard": []
+    }
+  },
   "mana": 4,
   "id": 9,
   "name": "Mass Dispel",
@@ -119,7 +156,13 @@
 }
 ---
 {
-  "mechanic": "damageAllEnemy",
+  "mechanic": {
+    "cast": {
+      "damageAllEnemyMinion": [
+        4
+      ]
+    }
+  },
   "mana": 7,
   "id": 10,
   "name": "Flamestrike",
@@ -131,21 +174,15 @@
 }
 ---
 {
-  "mechanic": "castRandomSpell",
-  "mana": 10,
-  "id": 11,
-  "name": "Puzzle Box of Yogg-Saron",
-  "hero": "neutral",
-  "rarity": "epic",
-  "description": "Cast 10 random spells (targets chosen randomly).",
-  "type": "spell",
-  "played": 0
-}
----
-{
   "race": "",
-  "mechanic": "battlecry",
   "attributes": [],
+  "mechanic": {
+    "battlecry": {
+      "gainBuffFriendly": [
+        "this"
+      ]
+    }
+  },
   "hp": 4,
   "attack": 4,
   "mana": 5,
@@ -160,8 +197,14 @@
 ---
 {
   "race": "elemental",
-  "mechanic": "attackEqualHealth",
   "attributes": [],
+  "mechanic": {
+    "healthChange": {
+      "minionAttackToHealth": [
+        "this"
+      ]
+    }
+  },
   "hp": 5,
   "attack": 0,
   "mana": 4,
@@ -176,8 +219,13 @@
 ---
 {
   "race": "beast",
-  "mechanic": "rushTaunt",
   "attributes": [],
+  "mechanic": {
+    "attributes": [
+      "rush",
+      "taunt"
+    ]
+  },
   "hp": 7,
   "attack": 5,
   "mana": 7,
@@ -192,8 +240,14 @@
 ---
 {
   "race": "dragon",
-  "mechanic": "battlecry",
   "attributes": [],
+  "mechanic": {
+    "battlecry": {
+      "setHeroHealth": [
+        15
+      ]
+    }
+  },
   "hp": 8,
   "attack": 8,
   "mana": 9,
@@ -208,8 +262,14 @@
 ---
 {
   "race": "",
-  "mechanic": "damageAllMinions",
   "attributes": [],
+  "mechanic": {
+    "spellCasted": {
+      "damageAllMinion": [
+        1
+      ]
+    }
+  },
   "hp": 2,
   "attack": 3,
   "mana": 2,
@@ -224,8 +284,10 @@
 ---
 {
   "race": "",
-  "mechanic": "",
   "attributes": [],
+  "mechanic": {
+    "": ""
+  },
   "hp": 5,
   "attack": 4,
   "mana": 4,
@@ -240,8 +302,15 @@
 ---
 {
   "race": "murloc",
-  "mechanic": "battlecry,summon",
   "attributes": [],
+  "mechanic": {
+    "battlecry": {
+      "summon": [
+        "Murloc Scout",
+        1
+      ]
+    }
+  },
   "hp": 1,
   "attack": 2,
   "mana": 2,
@@ -256,8 +325,12 @@
 ---
 {
   "race": "",
-  "mechanic": "battlecry,destroyEnemyWeapon",
   "attributes": [],
+  "mechanic": {
+    "battlecry": {
+      "destroyEnemyWeapon": []
+    }
+  },
   "hp": 2,
   "attack": 3,
   "mana": 2,
@@ -285,7 +358,13 @@
 }
 ---
 {
-  "mechanic": "drawCard",
+  "mechanic": {
+    "cast": {
+      "drawCard": [
+        4
+      ]
+    }
+  },
   "mana": 7,
   "id": 21,
   "name": "Sprint",
@@ -297,7 +376,14 @@
 }
 ---
 {
-  "mechanic": "summon",
+  "mechanic": {
+    "cast": {
+      "summon": [
+        "Locust",
+        7
+      ]
+    }
+  },
   "mana": 6,
   "id": 22,
   "name": "Swarm of Locusts",
@@ -309,7 +395,13 @@
 }
 ---
 {
-  "mechanic": "buffMinion",
+  "mechanic": {
+    "cast": {
+      "buffAttack": [],
+      "buffHealth": "4",
+      "buff": "Taunt"
+    }
+  },
   "mana": 6,
   "id": 23,
   "name": "Pharaoh\u0027s Blessing",
@@ -321,7 +413,13 @@
 }
 ---
 {
-  "mechanic": "drawCard",
+  "mechanic": {
+    "cast": {
+      "drawNotSpell": [
+        3
+      ]
+    }
+  },
   "mana": 2,
   "id": 24,
   "name": "Book of Specters",
@@ -334,8 +432,12 @@
 ---
 {
   "race": "demon",
-  "mechanic": "battlecry",
   "attributes": [],
+  "mechanic": {
+    "battlecry": {
+      "chooseFriendlyMinion": []
+    }
+  },
   "hp": 5,
   "attack": 5,
   "mana": 9,
@@ -350,8 +452,17 @@
 ---
 {
   "race": "mech",
-  "mechanic": "battlecry",
   "attributes": [],
+  "mechanic": {
+    "battlecry": {
+      "summon": [
+        "this"
+      ]
+    },
+    "attributes": [
+      "taunt"
+    ]
+  },
   "hp": 6,
   "attack": 3,
   "mana": 8,
@@ -366,8 +477,15 @@
 ---
 {
   "race": "mech",
-  "mechanic": "summonOnDamage",
   "attributes": [],
+  "mechanic": {
+    "onDamage": {
+      "summon": [
+        "Gaurd Bot",
+        1
+      ]
+    }
+  },
   "hp": 6,
   "attack": 2,
   "mana": 6,
@@ -382,8 +500,17 @@
 ---
 {
   "race": "",
-  "mechanic": "drawCard",
   "attributes": [],
+  "mechanic": {
+    "drawCard": {
+      "buffHealth": [
+        1
+      ],
+      "buffAttack": [
+        1
+      ]
+    }
+  },
   "hp": 4,
   "attack": 4,
   "mana": 5,
@@ -426,8 +553,12 @@
 ---
 {
   "race": "beast",
-  "mechanic": "",
   "attributes": [],
+  "mechanic": {
+    "onAttack": {
+      "damageSideMinions": 1
+    }
+  },
   "hp": 4,
   "attack": 2,
   "mana": 3,
@@ -442,8 +573,12 @@
 ---
 {
   "race": "beast",
-  "mechanic": "triggerOnMinion",
   "attributes": [],
+  "mechanic": {
+    "onMinionSummon": {
+      "attackMinion": 1
+    }
+  },
   "hp": 9,
   "attack": 9,
   "mana": 7,
@@ -458,8 +593,12 @@
 ---
 {
   "race": "",
-  "mechanic": "inPlay",
   "attributes": [],
+  "mechanic": {
+    "onMinionSummon": {
+      "setHealthEqual": 1
+    }
+  },
   "hp": 7,
   "attack": 2,
   "mana": 4,
@@ -474,8 +613,12 @@
 ---
 {
   "race": "",
-  "mechanic": "lifeSteal",
   "attributes": [],
+  "mechanic": {
+    "attributes": [
+      "lifesteal"
+    ]
+  },
   "hp": 3,
   "attack": 3,
   "mana": 3,

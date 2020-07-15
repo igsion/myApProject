@@ -56,7 +56,7 @@ public class MouseHandlerCard implements MouseListener, MouseMotionListener {
                     && MouseInfo.getPointerInfo().getLocation().y > tk.getScreenSize().height/4
                     && MouseInfo.getPointerInfo().getLocation().y <  tk.getScreenSize().height/4 + tk.getScreenSize().height/2){
                 PlayState playState = (PlayState) State.getState();
-                playState.playCard(card, player);
+                playState.playCard(player, card);
                 PlayPanel.getPlayPanel().updateState(gson.toJson(playState));
             }
             label.setLocation(this.x, this.y);

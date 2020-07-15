@@ -6,6 +6,11 @@ import Models.FileManagers.InfoPassiveFileManager;
 import Models.Images.ImageLoader;
 import Models.States.*;
 import Views.Display;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+
+import java.util.Map;
 
 public class Game implements Runnable {
 
@@ -46,11 +51,11 @@ public class Game implements Runnable {
         State.setState(loginState);
     }
 
-    public void setState(State state){
+    public void setState(State state) {
         State.setState(state);
     }
 
-    public PlayState getPlayState(){
+    public PlayState getPlayState() {
         return playState;
     }
 
@@ -58,11 +63,11 @@ public class Game implements Runnable {
         return loginState;
     }
 
-    public MenuState getMenuState(){
+    public MenuState getMenuState() {
         return menuState;
     }
 
-    public ShopState getShopState(){
+    public ShopState getShopState() {
         return shopState;
     }
 
@@ -70,11 +75,11 @@ public class Game implements Runnable {
         return collectionState;
     }
 
-    public SettingState getSettingState(){
+    public SettingState getSettingState() {
         return settingState;
     }
 
-    public StatusState getStatusState(){
+    public StatusState getStatusState() {
         return statusState;
     }
 
@@ -98,7 +103,7 @@ public class Game implements Runnable {
         init();
 
         double fps = 30;
-        double timerPerTick = 1000000000/fps;
+        double timerPerTick = 1000000000 / fps;
         double delta = 0;
         long now;
         long lastTime = System.nanoTime();
@@ -107,18 +112,18 @@ public class Game implements Runnable {
 
         while (running) {
             now = System.nanoTime();
-            delta += (now-lastTime) / timerPerTick;
+            delta += (now - lastTime) / timerPerTick;
             timer += now - lastTime;
             lastTime = now;
 
-            if(delta >= 1) {
+            if (delta >= 1) {
 //                tick();
 //                render();
                 ticks++;
                 delta--;
             }
 
-            if(timer >= 1000000000){
+            if (timer >= 1000000000) {
 //                System.out.println("FPS: " + ticks);
                 ticks = 0;
                 timer = 0;
@@ -128,16 +133,16 @@ public class Game implements Runnable {
         stop();
     }
 
-    public synchronized void start(){
-        if(running)
+    public synchronized void start() {
+        if (running)
             return;
         running = true;
         thread = new Thread(this);
         thread.start();
     }
 
-    public synchronized void stop(){
-        if(!running)
+    public synchronized void stop() {
+        if (!running)
             return;
         running = false;
         try {
@@ -147,23 +152,23 @@ public class Game implements Runnable {
         }
     }
 
-    public void setRunning(boolean running){
+    public void setRunning(boolean running) {
         this.running = running;
     }
 
-    public Player getPlayer(){
+    public Player getPlayer() {
         return player;
     }
 
-    public void setPlayer(Player player){
+    public void setPlayer(Player player) {
         this.player = player;
     }
 
-    public Deck getDeck(){
+    public Deck getDeck() {
         return deck;
     }
 
-    public void setDeck(Deck deck){
+    public void setDeck(Deck deck) {
         this.deck = deck;
     }
 

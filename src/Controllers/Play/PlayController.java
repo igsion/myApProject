@@ -19,7 +19,7 @@ public class PlayController implements ActionListener , MouseListener {
     public void actionPerformed(ActionEvent e) {
         PlayState playState = (PlayState) State.getState();
         if(e.getActionCommand().equals("endTurn")){
-            playState.nextTurn();
+            playState.nextTurn(1);
             PlayPanel.getPlayPanel().updateState(gson.toJson(playState));
         }
     }
