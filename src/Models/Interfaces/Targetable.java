@@ -1,4 +1,4 @@
-package Models.ABC;
+package Models.Interfaces;
 
 public interface Targetable {
 

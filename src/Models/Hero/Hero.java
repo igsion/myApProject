@@ -1,6 +1,6 @@
 package Models.Hero;
 
-import Models.ABC.Targetable;
+import Models.Interfaces.Targetable;
 
 public class Hero implements Targetable {
 

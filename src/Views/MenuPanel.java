@@ -20,6 +20,7 @@ public class MenuPanel extends JPanel {
         Color color = new Color(239 , 206 , 129);
         setBackground(color);
 
+        JButton playDeckReaderButton = new JButton("DeckReader");
         JButton playButton = new JButton("Play");
         JButton statusButton = new JButton("Status");
         JButton shopButton = new JButton("Shop");
@@ -28,6 +29,7 @@ public class MenuPanel extends JPanel {
         JButton exitButton = new JButton("Exit");
         goldLabel = new JLabel("");
 
+        playDeckReaderButton.setSize(100, 30);
         playButton.setSize(100 , 30);
         statusButton.setSize(100 , 30);
         shopButton.setSize(100 , 30);
@@ -36,6 +38,7 @@ public class MenuPanel extends JPanel {
         exitButton.setSize(100 , 30);
         goldLabel.setSize(100 , 50);
 
+        playDeckReaderButton.setLocation(500, 300);
         playButton.setLocation(500 , 350);
         statusButton.setLocation(500 , 400);
         shopButton.setLocation(500 , 450);
@@ -45,8 +48,9 @@ public class MenuPanel extends JPanel {
         goldLabel.setLocation(2*tk.getScreenSize().width/3, tk.getScreenSize().height - 50);
 
         MenuController menuController = new MenuController(shopButton, statusButton, collectionButton
-                , settingButton, playButton);
+                , settingButton, playButton, playDeckReaderButton);
 
+        playDeckReaderButton.addActionListener(menuController);
         playButton.addActionListener(menuController);
         statusButton.addActionListener(menuController);
         shopButton.addActionListener(menuController);
@@ -59,6 +63,7 @@ public class MenuPanel extends JPanel {
             }
         });
 
+        add(playDeckReaderButton);
         add(playButton);
         add(statusButton);
         add(shopButton);

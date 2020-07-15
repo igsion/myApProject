@@ -1,6 +1,7 @@
 package Models;
 
 import Models.FileManagers.CardsFileManager;
+import Models.FileManagers.DeckReaderFileManager;
 import Models.FileManagers.HeroesFileManager;
 import Models.FileManagers.InfoPassiveFileManager;
 import Models.Images.ImageLoader;
@@ -30,6 +31,7 @@ public class Game implements Runnable {
         CardsFileManager.getCardsFileManager().addCards();
         HeroesFileManager.getHeroesFileManager().addHeroes();
         InfoPassiveFileManager.getInfoPassiveFileManager().addInfoes();
+        DeckReaderFileManager.getDeckReaderFileManager().setDecks();
 
         ImageLoader.loadImages();
 

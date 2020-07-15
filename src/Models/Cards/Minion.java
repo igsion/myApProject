@@ -1,7 +1,7 @@
 package Models.Cards;
 
-import Models.ABC.Observer;
-import Models.ABC.Targetable;
+import Models.Interfaces.Observer;
+import Models.Interfaces.Targetable;
 import Models.States.State;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

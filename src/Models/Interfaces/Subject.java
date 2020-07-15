@@ -1,4 +1,4 @@
-package Models.ABC;
+package Models.Interfaces;
 
 public interface Subject {
     public void attach(Observer o);

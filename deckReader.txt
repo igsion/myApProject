@@ -1,0 +1,4 @@
+{
+"enemy": ["Deadly Shot" , "Deadly Shot" , "Deadly Shot" , "Deadly Shot", "Deadly Shot", "Deadly Shot", "Deadly Shot"] ,
+ "friend": ["Security Rover" , "Deadly Shot" , "Deadly Shot" , "Security Rover" , "Deadly Shot", "Deadly Shot", "Deadly Shot"]
+}

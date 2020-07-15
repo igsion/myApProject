@@ -1,6 +1,6 @@
 package Models.Cards;
 
-import Models.ABC.Observer;
+import Models.Interfaces.Observer;
 
 public class Quest extends Card implements Observer {
 

@@ -1,8 +1,9 @@
 package Models.States;
 
-import Models.ABC.Observer;
-import Models.ABC.Subject;
-import Models.ABC.Targetable;
+import Models.FileManagers.DeckReaderFileManager;
+import Models.Interfaces.Observer;
+import Models.Interfaces.Subject;
+import Models.Interfaces.Targetable;
 import Models.Cards.*;
 import Models.FileManagers.CardsFileManager;
 import Models.FileManagers.HeroesFileManager;
@@ -33,6 +34,7 @@ public class PlayState extends State implements Subject {
     private transient Map<Minion, Boolean>[] attackMaps;
     private transient ArrayList<Observer> observers = new ArrayList<>(0);
     private transient Random random;
+    private transient boolean isDeckReader = false;
 
     public PlayState(Game game) {
         super(game);
@@ -73,6 +75,26 @@ public class PlayState extends State implements Subject {
         heroes[2] = HeroesFileManager.getHeroesFileManager().getHero(this.game.getDeck().getHero());
         decks[1].addAll(this.game.getDeck().getCards());
         decks[2].addAll(this.game.getDeck().getCards());
+        mana[1] = 1;
+        manaTurn[1] = 1;
+        mana[2] = 1;
+        manaTurn[2] = 1;
+        drawCard(1, 1);
+        drawCard(1, 1);
+        drawCard(1, 1);
+        drawCard(2, 1);
+        drawCard(2, 1);
+        drawCard(2, 1);
+    }
+
+    public void startDeckReader() {
+        isDeckReader = true;
+        one = this.game.getPlayer();
+        two = this.game.getPlayer();
+        heroes = new Hero[3];
+        heroes[1] = HeroesFileManager.getHeroesFileManager().getHero("Mage");
+        heroes[2] = HeroesFileManager.getHeroesFileManager().getHero("Mage");
+        setDecks();
         mana[1] = 1;
         manaTurn[1] = 1;
         mana[2] = 1;
@@ -280,17 +302,32 @@ public class PlayState extends State implements Subject {
 //    }
 
     public void drawCard(int player, int number) {
-        for (int j = 0; j < number; j++) {
-            if (decks[player].size() > 0) {
-                int i = random.nextInt(decks[player].size());
-                if (hands[player].size() < 10) {
-                    hands[player].add(decks[player].get(i));
-                    notifyUpdate("drawCard", player);
+        if(!isDeckReader){
+            for (int j = 0; j < number; j++) {
+                if (decks[player].size() > 0) {
+                    int i = random.nextInt(decks[player].size());
+                    if (hands[player].size() < 10) {
+                        hands[player].add(decks[player].get(i));
+                        notifyUpdate("drawCard", player);
+                    }
+                    decks[player].remove(i);
+                    decks[player].trimToSize();
                 }
-                decks[player].remove(i);
-                decks[player].trimToSize();
+            }
+        } else {
+            for (int j = 0; j < number; j++) {
+                if (decks[player].size() > 0) {
+                    int i = random.nextInt(decks[player].size());
+                    if (hands[player].size() < 10) {
+                        hands[player].add(decks[player].get(0));
+                        notifyUpdate("drawCard", player);
+                    }
+                    decks[player].remove(0);
+                    decks[player].trimToSize();
+                }
             }
         }
+
     }
 
     public void drawNotSpell(int player, int number) {
@@ -542,6 +579,12 @@ public class PlayState extends State implements Subject {
     public String chooseDeck(String deckName) {
         this.game.setDeck(this.game.getPlayer().getDeck(deckName));
         return this.game.getDeck().getName();
+    }
+
+    public void setDecks() {
+        DeckReaderFileManager.getDeckReaderFileManager().setDecks();
+        decks[1].addAll(DeckReaderFileManager.getDeckReaderFileManager().getPlayer1());
+        decks[2].addAll(DeckReaderFileManager.getDeckReaderFileManager().getPlayer2());
     }
 
     public String chooseInfoPassive(String infoPassive) {

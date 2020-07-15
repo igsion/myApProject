@@ -1,6 +1,6 @@
 package Models;
 
-import Models.ABC.Observer;
+import Models.Interfaces.Observer;
 import Models.States.State;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
